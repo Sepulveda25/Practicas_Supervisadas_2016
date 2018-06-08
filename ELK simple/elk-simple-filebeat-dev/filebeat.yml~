@@ -1,0 +1,14 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - "/var/log/apache2/*.log"
+      document_type: apache
+
+output:
+  logstash:
+    hosts: ["172.17.0.3:5044"]
+    index: filebeat
+    tls:
+            insecure: true
+

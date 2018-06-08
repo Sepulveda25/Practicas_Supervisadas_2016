@@ -1,0 +1,24 @@
+FROM kibana
+
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -L -O https://download.elastic.co/beats/dashboards/beats-dashboards-1.1.0.zip 
+
+RUN apt-get -y install unzip && unzip beats-dashboards-*.zip
+
+COPY load.sh /beats-dashboards-*/ 
+
+RUN cd beats-dashboards-*/ && ./load.sh 
+
+RUN cd ~
+
+RUN curl -O https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json
+
+RUN curl -XPUT 'http://172.17.0.2:9200/_template/filebeat?pretty' -d@filebeat-index-template.json
+
+#COPY kibana.yml /usr/share/kibana/config
+
+#RUN htpasswd -c /etc/nginx/htpasswd.users kibanaadmin
+
+
+

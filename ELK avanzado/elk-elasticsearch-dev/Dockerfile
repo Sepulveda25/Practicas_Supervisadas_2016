@@ -1,0 +1,7 @@
+FROM elasticsearch
+
+COPY logging.yml /usr/share/elasticsearch/config/
+
+COPY elasticsearch.yml /usr/share/elasticsearch/config
+
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+TAG=$(basename $(readlink -f .))
+IMAGE=hub.psi.unc.edu.ar/dev/$TAG
+DIR=.
+
+#cp -a Dockerfile $DIR
+cp -a /srv/docker-run/$TAG $DIR
+cd $DIR
+
+docker build -t $IMAGE  .
+
+if [[ $IMAGE =~ ^hub.psi.unc.edu.ar ]]; then
+    docker push $IMAGE
+fi
+

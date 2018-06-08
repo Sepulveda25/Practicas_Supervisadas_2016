@@ -1,0 +1,25 @@
+FROM logstash
+
+#########Instalacion de screen 
+
+RUN apt-get update
+
+RUN apt-get install -y screen
+
+#####Configuracion de certificados tls
+
+RUN mkdir -p /etc/pki/tls/certs
+
+RUN mkdir /etc/pki/tls/private
+
+COPY openssl.cnf /etc/ssl/openssl.cnf
+
+RUN cd /etc/pki/tls && openssl req -config /etc/ssl/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/filebeat.key -out certs/filebeat.crt
+
+#### Se agrega redis-input.conf y output.conf 
+
+COPY redis-input.conf /etc/logstash/conf.d/redis-input.conf
+
+COPY output.conf /etc/logstash/conf.d/output.conf
+
+

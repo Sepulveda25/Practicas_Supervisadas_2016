@@ -1,0 +1,12 @@
+#!/bin/bash
+
+svn up
+TAG=$(basename $(readlink -f .))
+
+if [[ $(svn stat | grep "^?" | wc -l) -gt 0 ]]; then
+    svn stat | grep "^?" | awk '{print $2}' | xargs svn add
+fi
+svn ci -m "build $TAG $(date)"
+
+
+./02-crear

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+TAG=elk-logstash-shipper-dev
+
+start() {
+IMAGE=hub.psi.unc.edu.ar/dev/elk-logstash-shipper-dev
+docker run -ti --rm \
+    --name $TAG \
+    --privileged=true \
+    -h "$TAG" \
+    -p 5044:5044 \
+    -p 514:514 \
+    $IMAGE /bin/bash -c "
+       logstash -f /etc/logstash/conf.d/;	
+       /bin/bash 
+    "
+#    -v /etc/localtime:/etc/localtime:ro \
+	
+}
+ 
+if [[ $1 = "stop" ]]; then
+    docker rm -f $TAG
+elif [[ $1 = "bash" ]]; then
+    docker exec -ti $TAG bash
+else
+    start
+fi

@@ -1,0 +1,14 @@
+FROM kibana
+
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -L -O https://download.elastic.co/beats/dashboards/beats-dashboards-1.1.0.zip 
+
+RUN apt-get -y install unzip && unzip beats-dashboards-*.zip
+
+COPY load.sh /beats-dashboards-*/ 
+
+RUN cd beats-dashboards-*/ && ./load.sh 
+
+
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TAG=elk-simple-elasticsearch-dev
+
+IMAGE=hub.psi.unc.edu.ar/dev/elk-simple-elasticsearch-dev
+#docker run -ti -p 9200:9200 --rm  --name $IMAGE -h "$IMAGE"
+
+docker run -p 9202:9200 $IMAGE

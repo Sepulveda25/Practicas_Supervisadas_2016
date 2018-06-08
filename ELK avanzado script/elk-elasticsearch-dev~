@@ -1,0 +1,19 @@
+#!/bin/bash
+
+TAG=elk-elasticsearch-dev
+
+start() {
+IMAGE=hub.psi.unc.edu.ar/dev/elk-elasticsearch-dev
+docker run -p 9200:9200 $IMAGE
+
+#    -v /etc/localtime:/etc/localtime:ro \
+	
+}
+ 
+if [[ $1 = "stop" ]]; then
+    docker rm -f $TAG
+elif [[ $1 = "bash" ]]; then
+    docker exec -ti $TAG bash
+else
+    start
+fi

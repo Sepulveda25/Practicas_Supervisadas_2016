@@ -1,0 +1,7 @@
+  server.host: "localhost"
+  server.port: 5601
+  server.name: "kibana"
+  elasticsearch.url: "http://172.17.0.6/:9200"
+  elasticsearch.url: "http://172.17.0.8/:9200"
+  elasticsearch.url: "http://172.17.0.9/:9200"
+ 

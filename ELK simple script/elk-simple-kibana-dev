@@ -1,0 +1,19 @@
+#!/bin/bash
+
+TAG=elk-simple-kibana-dev
+
+start() {
+IMAGE=hub.psi.unc.edu.ar/dev/elk-simple-kibana-dev
+#docker run -ti -p 5601:5601 --name $IMAGE --privileged=true -e ELASTICSEARCH_URL=http://172.17.0.2:9200 -d $TAG
+docker run --name $TAG -e ELASTICSEARCH_URL=http://172.17.0.2:9200 -p 5601:5601 -d $IMAGE
+#    -v /etc/localtime:/etc/localtime:ro \
+	
+}
+ 
+if [[ $1 = "stop" ]]; then
+    docker rm -f $TAG
+elif [[ $1 = "bash" ]]; then
+    docker exec -ti $TAG bash
+else
+    start
+fi

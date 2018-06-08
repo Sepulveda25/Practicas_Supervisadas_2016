@@ -1,0 +1,41 @@
+FROM prima/filebeat
+
+COPY filebeat.yml /filebeat.yml
+
+COPY filebeat.yml /bin/filebeat.yml
+
+RUN apt-get update && apt-get install -y curl
+
+#####INSTALACION Y CONFIGURACION DE APACHE2##############
+
+RUN apt-get install -y apache2
+
+##########Configuracion de pagina ejemplo
+
+RUN mkdir -p /var/www/ejemplo.com
+
+COPY index.html /var/www/ejemplo.com/
+
+RUN chown -R $USER:$USER /var/www/ejemplo.com/
+
+RUN chmod -R 755 /var/www/
+
+COPY ejemplo.com.conf /etc/apache2/sites-available/
+
+RUN cd /etc/apache2/sites-available/ && a2ensite ejemplo.com.conf && a2dissite 000-default.conf && a2dissite default-ssl.conf
+
+COPY hosts /etc/hosts
+
+#####Instalacion y configuracion rsyslog
+
+RUN apt-get install -y rsyslog
+
+COPY 20-ufw.conf /etc/rsyslog.d/
+
+COPY 50-default.conf /etc/rsyslog.d/
+
+##############Instalacion de screen
+
+RUN apt-get install -y screen
+
+

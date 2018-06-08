@@ -1,0 +1,29 @@
+#!/bin/bash
+
+TAG=elk-filebeat-dev
+
+start() {
+IMAGE=hub.psi.unc.edu.ar/dev/elk-filebeat-dev
+docker run -ti --rm \
+    --name $TAG \
+    --privileged=true \
+    -h "$TAG" \
+    -p 8000:80 \
+    $IMAGE /bin/bash -c "
+         service apache2 start;
+         curl -O https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json;
+         curl -XPUT 'http://172.17.0.6:9200/_template/filebeat' -d@filebeat-index-template.json;
+         service rsyslog restart;  
+	/bin/bash 
+    "
+#    -v /etc/localtime:/etc/localtime:ro \
+	
+}
+ 
+if [[ $1 = "stop" ]]; then
+    docker rm -f $TAG
+elif [[ $1 = "bash" ]]; then
+    docker exec -ti $TAG bash
+else
+    start
+fi
